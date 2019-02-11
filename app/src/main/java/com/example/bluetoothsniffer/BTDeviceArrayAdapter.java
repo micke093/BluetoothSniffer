@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-class BTDeviceArrayAdapter extends ArrayAdapter<BluetoothDevice> {
+public class BTDeviceArrayAdapter extends ArrayAdapter<BluetoothDevice> {
 
     public BTDeviceArrayAdapter(Context context, List<BluetoothDevice> deviceList) {
         super(context, R.layout.device_item_layout, deviceList);

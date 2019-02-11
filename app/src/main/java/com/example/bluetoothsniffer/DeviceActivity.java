@@ -129,7 +129,7 @@ public class DeviceActivity extends AppCompatActivity {
                         Log.i("characteristic", chara.getUuid().toString());
                     }
 
-                    BTDeviceArrayAdapter btDeviceArrayAdapter = new BTDeviceArrayAdapter(this, );
+                    //BTDeviceArrayAdapter btDeviceArrayAdapter = new BTDeviceArrayAdapter(this, );
 
                     /*
                      * Enable notifications on accelerometer data

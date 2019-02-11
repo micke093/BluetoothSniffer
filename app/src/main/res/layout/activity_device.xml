@@ -11,26 +11,47 @@
     tools:context="com.example.bluetoothsniffer.DeviceActivity"
     tools:showIn="@layout/activity_device">
 
-    <TextView
-        android:id="@+id/deviceView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="43dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <!--android:text="@string/acc_sensor_info" -->
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        />
+            <TextView
+                android:id="@+id/deviceView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="43dp"
+                tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/dataView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/deviceView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp"
-        android:text="ax, ay, az"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+            <!--android:text="@string/acc_sensor_info" -->
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            />
+
+            <TextView
+                android:id="@+id/dataView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/deviceView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="48dp"
+                android:text="ax, ay, az"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                tools:ignore="MissingConstraints" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Back"
+                tools:ignore="MissingConstraints" />
+
+
+        </android.support.constraint.ConstraintLayout>
+    </LinearLayout>
+
 
 </RelativeLayout>
