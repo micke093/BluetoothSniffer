@@ -30,6 +30,10 @@ public class DeviceActivity extends AppCompatActivity {
      * Characteristics et c. are found at
      * https://lancaster-university.github.io/microbit-docs/resources/bluetooth/bluetooth_profile.html
      */
+    // Below: gui stuff...
+    private TextView mDeviceView;
+    private TextView mDataView;
+
     public static final UUID ACCELEROMETER_SERVICE_UUID =
             UUID.fromString("E95D0753-251D-470A-A062-FA1922DFA9A8");
     public static final UUID ACCELEROMETER_DATA_CHARACTERISTIC_UUID =
@@ -125,6 +129,8 @@ public class DeviceActivity extends AppCompatActivity {
                         Log.i("characteristic", chara.getUuid().toString());
                     }
 
+                    BTDeviceArrayAdapter btDeviceArrayAdapter = new BTDeviceArrayAdapter(this, );
+
                     /*
                      * Enable notifications on accelerometer data
                      * First: call setCharacteristicNotification
@@ -190,8 +196,8 @@ public class DeviceActivity extends AppCompatActivity {
             // update ui
             mHandler.post(new Runnable() {
                 public void run() {
-                    float[] acc = getAccXyz(value);
-                    mDataView.setText(String.format("( %.2f, %.2f, %.2f )", acc[0], acc[1], acc[2]));
+                   /// float[] acc = getAccXyz(value);
+                ///    mDataView.setText(String.format("( %.2f, %.2f, %.2f )", acc[0], acc[1], acc[2]));
                 }
             });
         }
@@ -211,6 +217,7 @@ public class DeviceActivity extends AppCompatActivity {
 
     // raw acc data to value in "G"
     // refer to  documentation on Micro:bit
+    /*
     private float[] getAccXyz(byte[] sensorValue) {
         int x = (sensorValue[1] << 8) + sensorValue[0]; // usinged 16 bit int, little endian
         int y = (sensorValue[3] << 8) + sensorValue[2];
@@ -221,15 +228,12 @@ public class DeviceActivity extends AppCompatActivity {
                 convertAccRawToG(z)
         };
     }
+    */
 
     // raw acc data to value in "G"
     private float convertAccRawToG(int value) {
         return value * 1.0F / (1000.0F); // scale factor, refer to  documentation on Micro:bit
     }
-
-    // Below: gui stuff...
-    private TextView mDeviceView;
-    private TextView mDataView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
