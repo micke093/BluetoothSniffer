@@ -1,57 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginRight="10dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
-    tools:context="com.example.bluetoothsniffer.DeviceActivity"
-    tools:showIn="@layout/activity_device">
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imageIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/bluetooth_image" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/deviceView"
-                android:layout_width="wrap_content"
+                android:id="@+id/textViewDeviceName"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="43dp"
-                tools:ignore="MissingConstraints" />
-
-            <!--android:text="@string/acc_sensor_info" -->
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            />
+                android:layout_gravity="center"
+                android:text="skndnf sdknfs cnk" />
 
             <TextView
-                android:id="@+id/dataView"
+                android:id="@+id/weatherContentTime"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="test" />
+
+            <TextView
+                android:id="@+id/textViewOnTop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/deviceView"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="48dp"
                 android:text="ax, ay, az"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                tools:ignore="MissingConstraints" />
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Back"
-                tools:ignore="MissingConstraints" />
+        </LinearLayout>
 
-
-        </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 
-
-</RelativeLayout>
+</LinearLayout>

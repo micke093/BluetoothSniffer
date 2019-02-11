@@ -54,8 +54,15 @@ public class DeviceActivity extends AppCompatActivity {
         super.onStart();
         mConnectedDevice = ConnectedDevice.getInstance();
         if (mConnectedDevice != null) {
-            mDeviceView.setText(mConnectedDevice.toString());
-            connect();
+            if(mDeviceView != null)
+            {
+                mDeviceView.setText(mConnectedDevice.toString());
+                connect();
+            }
+            else
+            {
+                showToast("mDeviceView == null");
+            }
         }
     }
 
@@ -240,8 +247,8 @@ public class DeviceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device);
 
-        mDeviceView = findViewById(R.id.deviceView);
-        mDataView = findViewById(R.id.dataView);
+        mDeviceView = findViewById(R.id.textViewDeviceName);
+        mDataView = findViewById(R.id.textViewOnTop);
         mHandler = new Handler();
     }
 
