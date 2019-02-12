@@ -6,12 +6,15 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -28,8 +31,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 /**
- * An example on how to use the Android BLE API to connect to a BLE device, in this case
- * a BBC Micro:bit, and read some data from UART.
+ * An example on how to use the Android BLE API to connect to a BLE device and read some data from UART.
  * The actual manipulation of the sensors services and characteristics is performed in the
  * DeviceActivity class.
  * NB! This example only aims to demonstrate the basic functionality in the Android BLE API.
@@ -133,14 +135,19 @@ public class MainActivity extends AppCompatActivity {
     /*
      * Scan for BLE devices.
      */
-    private void scanLeDevice(final boolean enable) {
-        if (enable) {
+    private void scanLeDevice(final boolean enable)
+    {
+        if (enable)
+        {
             if (!mScanning) {
                 // stop scanning after a pre-defined scan period, SCAN_PERIOD
-                mHandler.postDelayed(new Runnable() {
+                mHandler.postDelayed(new Runnable()
+                {
                     @Override
-                    public void run() {
-                        if (mScanning) {
+                    public void run()
+                    {
+                        if (mScanning)
+                        {
                             mScanning = false;
                             // stop/startLeScan is deprecated from API 21,
                             // but we support API 18 and up
@@ -195,17 +202,22 @@ public class MainActivity extends AppCompatActivity {
      * Implementation of the device scan callback.
      * Only adding devices matching name BBC_MICRO_BIT.
      */
-    private BluetoothAdapter.LeScanCallback mLeScanCallback =
-            new BluetoothAdapter.LeScanCallback() {
+    private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback()
+    {
+        int tmp = 0;
                 @Override
-                public void onLeScan(final BluetoothDevice device, int rssi,
-                                     byte[] scanRecord) {
-                    runOnUiThread(new Runnable() {
+                public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord)
+                {
+                    runOnUiThread(new Runnable()
+                    {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         @Override
                         public void run() {
                             String name = device.getName();
-                            if (name != null
-                                    && !mDeviceList.contains(device)) {
+                            if (name != null && !mDeviceList.contains(device))
+                            {
+                                tmp++;
+                                Log.d("banana", "Device name: " + device.getName() + ", device address: " + device.getAddress() + ", UUIDS: " + device.getUuids() + ", number: " + tmp);
                                 mDeviceList.add(device);
                                 mAdapter.notifyDataSetChanged();
                                 String msg = getString(R.string.found_devices_msg, mDeviceList.size());

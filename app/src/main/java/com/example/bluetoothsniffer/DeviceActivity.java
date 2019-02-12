@@ -99,7 +99,7 @@ public class DeviceActivity extends AppCompatActivity {
                 gatt.discoverServices();
                 mHandler.post(new Runnable() {
                     public void run() {
-                        mDataView.setText("Connected");
+                        //mDataView.setText("Connected");
                     }
                 });
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
@@ -107,7 +107,7 @@ public class DeviceActivity extends AppCompatActivity {
                 mBluetoothGatt = null;
                 mHandler.post(new Runnable() {
                     public void run() {
-                        mDataView.setText("Disconnected");
+                        //mDataView.setText("Disconnected");
                     }
                 });
             }
