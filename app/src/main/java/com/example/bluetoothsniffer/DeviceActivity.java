@@ -247,6 +247,8 @@ public class DeviceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device);
 
+        System.out.println("DeviceActivity");
+
         mDeviceView = findViewById(R.id.textViewDeviceName);
         mDataView = findViewById(R.id.textViewOnTop);
         mHandler = new Handler();

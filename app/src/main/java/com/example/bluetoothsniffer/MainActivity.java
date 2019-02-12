@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean mScanning;
     private Handler mHandler;
 
+    private Button back_button;
+
     private ArrayList<BluetoothDevice> mDeviceList;
     private BTDeviceArrayAdapter mAdapter;
     private TextView mScanInfoView;
@@ -237,9 +239,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        System.out.println("Main Activity");
+
         mHandler = new Handler();
 
         mScanInfoView = findViewById(R.id.scanInfo);
+        final Intent intent = new Intent(MainActivity.this, DeviceActivity.class);
+
+        back_button = findViewById(R.id.button_back);
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(back_button.isPressed())
+                    startActivity(intent);
+            }
+        });
+
+
 
         Button startScanButton = findViewById(R.id.startScanButton);
         startScanButton.setOnClickListener(new View.OnClickListener() {
