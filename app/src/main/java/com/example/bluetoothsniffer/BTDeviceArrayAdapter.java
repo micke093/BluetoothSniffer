@@ -20,8 +20,7 @@ public class BTDeviceArrayAdapter extends ArrayAdapter<BluetoothDevice> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.device_item_layout, parent,
-                false);
+        View rowView = inflater.inflate(R.layout.device_item_layout, parent, false);
 
         TextView nameView = rowView.findViewById(R.id.deviceName);
         TextView infoView = rowView.findViewById(R.id.deviceInfo);

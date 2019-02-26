@@ -27,6 +27,9 @@
         <activity android:name=".DeviceActivity">
         </activity>
 
+        <activity android:name=".SniffActivity">
+        </activity>
+
     </application>
 
 </manifest>

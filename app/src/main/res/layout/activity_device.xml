@@ -9,43 +9,78 @@
         android:id="@+id/imageIcon"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_gravity="center|top"
         android:src="@drawable/bluetooth_image" />
+
+    <TextView
+        android:id="@+id/textViewDeviceNameLabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Device Name:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textDeviceName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DEVICE NAME" />
+
+    <TextView
+        android:id="@+id/textMACAddressLabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="MAC address:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textMACAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="MAC ADDRESS" />
+
+    <TextView
+        android:id="@+id/textDeviceTypeLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/deviceView"
+        android:layout_centerHorizontal="true"
+        android:text="Type:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textDeviceType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DEVICE TYPE" />
+
+    <TextView
+        android:id="@+id/textOtherLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/deviceView"
+        android:layout_centerHorizontal="true"
+        android:text="Other:"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/textOther"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="OTHER INFO" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-        <LinearLayout
+        <Button
+            android:id="@+id/buttonBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textViewDeviceName"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="skndnf sdknfs cnk" />
-
-            <TextView
-                android:id="@+id/weatherContentTime"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="test" />
-
-            <TextView
-                android:id="@+id/textViewOnTop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/deviceView"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="48dp"
-                android:text="ax, ay, az"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        </LinearLayout>
+            android:layout_weight="1"
+            android:text="Back" />
 
     </LinearLayout>
 

@@ -7,10 +7,13 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,8 +34,11 @@ public class DeviceActivity extends AppCompatActivity {
      * https://lancaster-university.github.io/microbit-docs/resources/bluetooth/bluetooth_profile.html
      */
     // Below: gui stuff...
-    private TextView mDeviceView;
-    private TextView mDataView;
+    private TextView mDeviceName;
+    private TextView mDeviceMACAddress;
+    private TextView mDeviceType;
+    private TextView mDeviceOtherInfo;
+    private Button backButton;
 
     public static final UUID ACCELEROMETER_SERVICE_UUID =
             UUID.fromString("E95D0753-251D-470A-A062-FA1922DFA9A8");
@@ -54,9 +60,33 @@ public class DeviceActivity extends AppCompatActivity {
         super.onStart();
         mConnectedDevice = ConnectedDevice.getInstance();
         if (mConnectedDevice != null) {
-            if(mDeviceView != null)
+            if(mDeviceName != null)
             {
-                mDeviceView.setText(mConnectedDevice.toString());
+                mDeviceName.setText(mConnectedDevice.getName());
+                mDeviceMACAddress.setText(mConnectedDevice.getAddress());
+
+                if(mConnectedDevice.getType() == BluetoothDevice.DEVICE_TYPE_CLASSIC)
+                {
+                    mDeviceType.setText("Classic device");
+                }
+                else if(mConnectedDevice.getType() == BluetoothDevice.DEVICE_TYPE_LE)
+                {
+                    mDeviceType.setText("LE device");
+                }
+                else if(mConnectedDevice.getType() == BluetoothDevice.DEVICE_TYPE_DUAL)
+                {
+                    mDeviceType.setText("Dual device");
+                }
+                else if(mConnectedDevice.getType() == BluetoothDevice.DEVICE_TYPE_UNKNOWN)
+                {
+                    mDeviceType.setText("Unknown device");
+                }
+                else
+                {
+                    mDeviceType.setText("" + mConnectedDevice.getType());
+                }
+
+                mDeviceOtherInfo.setText("None");
                 connect();
             }
             else
@@ -181,7 +211,7 @@ public class DeviceActivity extends AppCompatActivity {
                 mHandler.post(new Runnable() {
                     public void run() {
                         showToast("Acc-data notifications enabled");
-                        mDeviceView.setText("Accelerometer service");
+                        mDeviceName.setText("Accelerometer service");
                     }
                 });
             }
@@ -249,8 +279,26 @@ public class DeviceActivity extends AppCompatActivity {
 
         System.out.println("DeviceActivity");
 
-        mDeviceView = findViewById(R.id.textViewDeviceName);
-        mDataView = findViewById(R.id.textViewOnTop);
+        mDeviceName = findViewById(R.id.textDeviceName);
+        mDeviceMACAddress = findViewById(R.id.textMACAddress);
+        mDeviceType = findViewById(R.id.textDeviceType);
+        mDeviceOtherInfo = findViewById(R.id.textOther);
+
+        backButton = findViewById(R.id.buttonBack);
+        backButton.setText("Back");
+        backButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                if(backButton.isPressed())
+                {
+                    startActivity(new Intent(DeviceActivity.this, MainActivity.class));
+                }
+            }
+        });
+
+
         mHandler = new Handler();
     }
 

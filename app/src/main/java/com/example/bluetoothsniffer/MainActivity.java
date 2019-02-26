@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,13 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.bluetoothsniffer.BTDeviceArrayAdapter;
-import com.example.bluetoothsniffer.ConnectedDevice;
-import com.example.bluetoothsniffer.DeviceActivity;
-import com.example.bluetoothsniffer.R;
-
 import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * An example on how to use the Android BLE API to connect to a BLE device and read some data from UART.
@@ -60,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean mScanning;
     private Handler mHandler;
 
-    private Button back_button;
+    private FloatingActionButton fabSniffButton;
 
     private ArrayList<BluetoothDevice> mDeviceList;
     private BTDeviceArrayAdapter mAdapter;
@@ -185,14 +180,18 @@ public class MainActivity extends AppCompatActivity {
                 //a message that says something of the likes of:
                 // "Malformed LE Advertising Report Event - unsupported legacy_event_type 0x06"
                 //I tried a bunch of stuff but this one seems to actually work.
+
+
                 mScanInfoView.setText(getString(R.string.no_devices_msg));
+                //mScanInfoView.setText("Scanning for devices..");
 
                 showToast("BLE scan started");
             }
-        } else {
-            if (mScanning) {
-
-
+        }
+        else
+        {
+            if (mScanning)
+            {
                 mScanning = false;
                 mBluetoothAdapter.stopLeScan(mLeScanCallback);
                 showToast("BLE scan stopped");
@@ -201,15 +200,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Implementation of the device scan callback.
-     * Only adding devices matching name BBC_MICRO_BIT.
+     * Implementation of the device scan callback
      */
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback()
     {
         int tmp = 0;
                 @Override
-                public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord)
+                public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) //rssi = signal-quality
                 {
+                    //Log.d("banana", "RSSI: " + rssi);
+
+
                     runOnUiThread(new Runnable()
                     {
                         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -219,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
                             if (name != null && !mDeviceList.contains(device))
                             {
                                 tmp++;
-                                Log.d("banana", "Device name: " + device.getName() + ", device address: " + device.getAddress() + ", UUIDS: " + device.getUuids() + ", number: " + tmp);
+                                Log.d("banana", "Device name: " + device.getName() + ", device address: " + device.getAddress() + ", UUIDS: " + /*device.getUuids().toString() + */ ", number: " + tmp);
                                 mDeviceList.add(device);
                                 mAdapter.notifyDataSetChanged();
                                 String msg = getString(R.string.found_devices_msg, mDeviceList.size());
@@ -246,14 +247,21 @@ public class MainActivity extends AppCompatActivity {
         mScanInfoView = findViewById(R.id.scanInfo);
         final Intent intent = new Intent(MainActivity.this, DeviceActivity.class);
 
-        back_button = findViewById(R.id.button_back);
-        back_button.setOnClickListener(new View.OnClickListener() {
+        fabSniffButton = (FloatingActionButton) findViewById(R.id.fabSniff);
+        fabSniffButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                if(back_button.isPressed())
+            public void onClick(View view)
+            {
+                if(fabSniffButton.isPressed())
+                {
+                    Intent intent = new Intent(MainActivity.this, SniffActivity.class);
                     startActivity(intent);
+                }
             }
         });
+
+
 
 
 
@@ -282,6 +290,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         initBLE();
+        mDeviceList.clear();
+        scanLeDevice(true);
     }
 
     // TODO ...
