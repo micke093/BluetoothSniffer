@@ -88,6 +88,9 @@ public class SniffActivity extends AppCompatActivity
             public void onReceive(Context context, Intent intent)
             {
                 String action = intent.getAction();
+
+                Log.d("banana", "numberOfDevices: " + this.numberOfDevices);
+
                 if (BluetoothDevice.ACTION_FOUND.equals(action))
                 {
                     BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
@@ -98,8 +101,6 @@ public class SniffActivity extends AppCompatActivity
 
                     Log.d("banana", numberOfDevices + ". New Device: " + device.getName() + ", Address: " + device.getAddress());
 
-
-
                     numberOfDevices++;
                 }
             }
@@ -107,6 +108,8 @@ public class SniffActivity extends AppCompatActivity
 
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         this.registerReceiver(bReceiver, filter);
+
+
     }
 
     // short messages

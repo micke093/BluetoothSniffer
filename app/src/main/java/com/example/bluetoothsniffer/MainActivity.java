@@ -205,31 +205,29 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback()
     {
         int tmp = 0;
+        @Override
+        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) //rssi = signal-quality
+        {
+            //Log.d("banana", "RSSI: " + rssi);
+            runOnUiThread(new Runnable()
+            {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
-                public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) //rssi = signal-quality
-                {
-                    //Log.d("banana", "RSSI: " + rssi);
-
-
-                    runOnUiThread(new Runnable()
+                public void run() {
+                    String name = device.getName();
+                    if (name != null && !mDeviceList.contains(device))
                     {
-                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-                        @Override
-                        public void run() {
-                            String name = device.getName();
-                            if (name != null && !mDeviceList.contains(device))
-                            {
-                                tmp++;
-                                Log.d("banana", "Device name: " + device.getName() + ", device address: " + device.getAddress() + ", UUIDS: " + /*device.getUuids().toString() + */ ", number: " + tmp);
-                                mDeviceList.add(device);
-                                mAdapter.notifyDataSetChanged();
-                                String msg = getString(R.string.found_devices_msg, mDeviceList.size());
-                                mScanInfoView.setText(msg);
-                            }
-                        }
-                    });
+                        tmp++;
+                        Log.d("banana", "Device name: " + device.getName() + ", device address: " + device.getAddress() + ", UUIDS: " + /*device.getUuids().toString() + */ ", number: " + tmp);
+                        mDeviceList.add(device);
+                        mAdapter.notifyDataSetChanged();
+                        String msg = getString(R.string.found_devices_msg, mDeviceList.size());
+                        mScanInfoView.setText(msg);
+                    }
                 }
-            };
+            });
+        }
+    };
 
     /**
      * Below: Manage activity, and hence bluetooth, life cycle,
