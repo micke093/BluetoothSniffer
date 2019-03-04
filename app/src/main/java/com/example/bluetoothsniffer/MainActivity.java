@@ -4,7 +4,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -60,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<BluetoothDevice> mDeviceList;
     private BTDeviceArrayAdapter mAdapter;
     private TextView mScanInfoView;
+
+    private int RSSI = 0;
 
     private void initBLE() {
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
@@ -126,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
         ConnectedDevice.setInstance(mDeviceList.get(position));
         showToast(ConnectedDevice.getInstance().toString());
         Intent intent = new Intent(MainActivity.this, DeviceActivity.class);
+        intent.putExtra("RSSIValue", RSSI); //send the RSSI value forward to DeviceActivity to catch
         startActivity(intent);
     }
 
@@ -209,16 +215,18 @@ public class MainActivity extends AppCompatActivity {
         public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) //rssi = signal-quality
         {
             //Log.d("banana", "RSSI: " + rssi);
+            final int rssiTmp = rssi;
             runOnUiThread(new Runnable()
             {
                 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
-                public void run() {
+                public void run()
+                {
                     String name = device.getName();
                     if (name != null && !mDeviceList.contains(device))
                     {
                         tmp++;
-                        Log.d("banana", "Device name: " + device.getName() + ", device address: " + device.getAddress() + ", UUIDS: " + /*device.getUuids().toString() + */ ", number: " + tmp);
+                        //Log.d("banana", "Device name: " + device.getName() + ", device address: " + device.getAddress() + ", RSSI: " + rssiTmp + ", number: " + tmp);
                         mDeviceList.add(device);
                         mAdapter.notifyDataSetChanged();
                         String msg = getString(R.string.found_devices_msg, mDeviceList.size());
@@ -234,7 +242,8 @@ public class MainActivity extends AppCompatActivity {
      * via onCreate, onStart and onStop.
      */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -258,10 +267,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
-
 
         Button startScanButton = findViewById(R.id.startScanButton);
         startScanButton.setOnClickListener(new View.OnClickListener() {
@@ -290,6 +295,8 @@ public class MainActivity extends AppCompatActivity {
         initBLE();
         mDeviceList.clear();
         scanLeDevice(true);
+        startScanBluetooth();
+        mBluetoothAdapter.startDiscovery();
     }
 
     // TODO ...
@@ -300,6 +307,7 @@ public class MainActivity extends AppCompatActivity {
         scanLeDevice(false);
         mDeviceList.clear();
         mAdapter.notifyDataSetChanged();
+        mBluetoothAdapter.cancelDiscovery();
         // NB !release additional resources
         // ...BleGatt...
     }
@@ -308,5 +316,34 @@ public class MainActivity extends AppCompatActivity {
     protected void showToast(String msg) {
         Toast toast = Toast.makeText(this, msg, Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    private void startScanBluetooth()
+    {
+        final BroadcastReceiver bReceiver = new BroadcastReceiver()
+        {
+            @Override
+            public void onReceive(Context context, Intent intent)
+            {
+                String action = intent.getAction();
+                if (BluetoothDevice.ACTION_FOUND.equals(action))
+                {
+                    BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                    RSSI = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
+                    //Log.d("banana", "onReceive: " + RSSI);
+                    if (!mDeviceList.contains(device))
+                    {
+                        mDeviceList.add(device);
+                        mAdapter.notifyDataSetChanged();
+                        String msg = getString(R.string.found_devices_msg, mDeviceList.size());
+                        mScanInfoView.setText(msg);
+                    }
+                    Log.d("banana", ". New Device: " + device.getName() + ", Address: " + device.getAddress());
+                }
+            }
+        };
+
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        this.registerReceiver(bReceiver, filter);
     }
 }

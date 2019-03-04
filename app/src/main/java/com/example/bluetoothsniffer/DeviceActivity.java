@@ -38,6 +38,7 @@ public class DeviceActivity extends AppCompatActivity {
     private TextView mDeviceMACAddress;
     private TextView mDeviceType;
     private TextView mDeviceOtherInfo;
+    private TextView mDeviceRSSI;
     private Button backButton;
 
     public static final UUID ACCELEROMETER_SERVICE_UUID =
@@ -63,6 +64,12 @@ public class DeviceActivity extends AppCompatActivity {
             if(mDeviceName != null)
             {
                 mDeviceName.setText(mConnectedDevice.getName());
+
+                if(mConnectedDevice.getName() == null)
+                {
+                    mDeviceName.setText("No set name (null)");
+                }
+
                 mDeviceMACAddress.setText(mConnectedDevice.getAddress());
 
                 if(mConnectedDevice.getType() == BluetoothDevice.DEVICE_TYPE_CLASSIC)
@@ -83,8 +90,11 @@ public class DeviceActivity extends AppCompatActivity {
                 }
                 else
                 {
-                    mDeviceType.setText("" + mConnectedDevice.getType());
+                    mDeviceType.setText("null" + mConnectedDevice.getType());
                 }
+
+                //get the RSSI value
+                mDeviceRSSI.setText("" + getIntent().getExtras().getInt("RSSIValue", 0));
 
                 mDeviceOtherInfo.setText("None");
                 connect();
@@ -283,6 +293,7 @@ public class DeviceActivity extends AppCompatActivity {
         mDeviceMACAddress = findViewById(R.id.textMACAddress);
         mDeviceType = findViewById(R.id.textDeviceType);
         mDeviceOtherInfo = findViewById(R.id.textOther);
+        mDeviceRSSI = findViewById(R.id.textDeviceRSSI);
 
         backButton = findViewById(R.id.buttonBack);
         backButton.setText("Back");
